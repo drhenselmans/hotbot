@@ -1,0 +1,34 @@
+## Natural Language Toolkit: feat0.fcfg
+##
+## First example of a feature-based grammar for English, illustrating
+## value-sharing of NUM and TENSE features.
+## Used in Feature-Based Grammars chapter.
+## 
+## Author: Ewan Klein <ewan@inf.ed.ac.uk> 
+## URL: <http://nltk.sourceforge.net>
+## For license information, see LICENSE.TXT
+
+% start S
+# ###################
+# Grammar Productions
+# ###################
+
+# S expansion productions
+S -> QNoun[NUM=?n] VP[NUM=?n] | VP[NUM=?n]
+
+# NP expansion productions
+QNoun[NUM=?n](adj1, adj2) -> Which adj1 adj2 NOUN[NUM=?n] | Which adj2 adj1 NOUN[NUM=?n]
+QNoun[NUM=?n] -> What
+
+# VP expansion productions
+VP[TENSE=?t, NUM=?n] -> IV[TENSE=?t, NUM=?n]
+VP[TENSE=?t, NUM=?n] -> TV[TENSE=?t, NUM=?n] NP
+
+# ###################
+# Lexical Productions
+# ###################
+
+Which -> 'which' | 'what' | 'whose'
+What -> 'who' | 'what' | 'where'
+
+

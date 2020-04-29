@@ -1,0 +1,99 @@
+# Natural Language Toolkit: FCFG format
+# Type: question
+# Tags: Obj, Q, Quality, Subj, Verb
+# Author: Daan Henselmans
+
+% start S
+
+# S expansion productions
+S -> Obj_Q_Subj
+S -> Obj_Q_Subj_Verb
+S -> Obj_Q_Verb
+S -> Obj_Subj
+S -> Obj_Subj_Verb
+S -> Q_Quality_Subj
+S -> Q_Subj
+S -> Quality_Subj
+S -> Subj_Verb
+
+#Expansions
+Obj_Q_Subj -> Which[num=?n] NOUN[num=?n] Is[pers=?p, num=?n] Pron[pers=?p, num=?n, case=nom]
+
+Obj_Q_Subj_Verb -> How Do[pers=?p, num=?n] Pron[pers=?p, num=?n, case=nom] VERB[form=inf, type=trans] NounPhrase[case=acc]
+Obj_Q_Subj_Verb -> Which[num=?m] NOUN[num=?m] Do[pers=?p, num=?n] Pron[pers=?p, num=?n, case=nom] VERB[form=inf, type=trans]
+
+Obj_Q_Verb -> What Is[pers=3, num=sg] VERB[form=prog, type=trans] NounPhrase[case=acc]
+Obj_Q_Verb -> What VERB[form=simple, type=trans] NounPhrase[case=acc]
+Obj_Q_Verb -> How Is[pers=?p, num=sg] NounPhrase[pers=?p, case=nom] VERB[form=perf, type=trans]
+
+Obj_Subj -> Is[pers=?p, num=?n] Pron[pers=?p, num=?n, case=nom] NounPhrase[num=?n, case=acc]
+
+Obj_Subj_Verb -> Do[pers=?p, num=?n] Pron[pers=?p, num=?n, case=nom] VERB[form=inf, type=trans] NounPhrase[case=acc]
+
+Q_Quality_Subj -> How Is[pers=?p, num=?n] NounPhrase[pers=?p, num=?n, case=nom] QUALITY
+
+Q_Subj -> What Is[pers=?p, num=?n] NounPhrase[pers=?p, num=?n, case=nom]
+Q_Subj -> How Is[pers=?p, num=?n] NounPhrase[pers=?p, num=?n, case=nom]
+
+Quality_Subj -> Is[pers=?p, num=?n] NounPhrase[pers=?p, num=?n, case=nom] QUALITY
+# 'do you think' NounPhrase[num=?n] Is[num=?n] QUALITY
+
+Subj_Verb -> Do[pers=?p, num=?n] Pron[pers=?p, num=?n, case=nom] VERB[form=inf, type=intrans]
+
+# Lexical Productions
+# Function words
+Which -> 'which' | 'what' | 'whose'
+Which[num=pl] -> 'how many'
+What -> 'who' | 'what'
+How -> 'how' | 'why' | 'where' | 'when'
+
+Det[num=sg] -> 'a' | 'the'
+Det[num=pl] -> 'the'
+
+# Noun phrases
+NounPhrase[pers=?p, num=?n, case=?c] -> Pron[pers=?p, num=?n, case=?c]
+NounPhrase[pers=3, num=?n] -> NOUN[num=?n]
+NounPhrase[pers=3, num=?n] -> Det[num=?n] NOUN[num=?n]
+
+Pron[pers=1, num=sg, case=nom] -> 'i'
+Pron[pers=1, num=sg, case=acc] -> 'me' | 'myself'
+Pron[pers=1, num=pl, case=nom] -> 'we'
+Pron[pers=1, num=pl, case=acc] -> 'us' | 'ourselves'
+Pron[pers=2, case=nom] -> 'you'
+Pron[pers=2, num=sg, case=acc] -> 'you' | 'yourself'
+Pron[pers=2, num=pl, case=acc] -> 'you' | 'yourselves'
+Pron[pers=3, num=sg] -> 'this' | 'that'
+Pron[pers=3, num=pl] -> 'these' | 'those'
+
+# Verb phrases
+Is[pers=1, num=sg] -> 'am' | 'was'
+Is[pers=1, num=pl] -> 'are' | 'were'
+Is[pers=2] -> 'are' | 'were'
+Is[pers=3, num=sg] -> 'is' | 'was'
+Is[pers=3, num=pl] -> 'are' | 'were'
+
+Do[pers=1] -> 'do' | 'did' | 'would'
+Do[pers=2] -> 'do' | 'did' | 'would'
+Do[pers=3, num=sg] -> 'does' | 'did' | 'would'
+Do[pers=3, num=pl] -> 'do' | 'did' | 'would'
+
+#NOUN in gazetteer
+#QUALITY in gazetteer
+#VERB in gazetteer
+
+NOUN[num=pl] -> 'questions' | 'answers' | 'texts' | 'ducks' | 'cowboys' | 'words'
+NOUN[num=sg] -> 'question' | 'answer' | 'text' | 'duck' | 'cowboy' | 'word'
+VERB[form=inf] -> 'know' | 'see' | 'write'
+VERB[form=inf, type=intrans] -> 'leave' | 'leaving'
+VERB[form=inf, type=trans] -> 'prefer' | 'create' | 'like'
+VERB[form=perf] -> 'knew' | 'saw' | 'wrote' | 'writes'
+VERB[form=perf, type=trans] -> 'preferred' | 'created' | 'liked'
+VERB[form=perfect, type=intrans] -> 'left'
+VERB[form=prog] -> 'knowing' | 'seeing' | 'writing'
+VERB[form=prog, type=trans] -> 'preferring' | 'creating' | 'liking'
+VERB[form=simple] -> 'knows' | 'sees'
+VERB[form=simple, type=intrans] -> 'left'
+VERB[form=simple, type=trans] -> 'prefers' | 'creates' | 'likes'
+QUALITY[+qual] -> 'smart' | 'interesting' | 'cool' | 'funny'
+QUALITY[-qual] -> 'dumb'
+QUALITY -> 'red' | 'blue' | 'green' | 'hungry' | 'here' | 'there'

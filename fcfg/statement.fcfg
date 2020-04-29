@@ -1,0 +1,60 @@
+# Natural Language Toolkit: FCFG format
+# Type: question
+# Tags: Obj, Q, Quality, Subj, Verb
+# Author: Daan Henselmans
+
+% start S
+
+# S expansion productions
+S -> Obj_Subj
+S -> Obj_Subj_Verb
+S -> Quality_Subj
+S -> Subj_Verb
+
+#Expansions
+Obj_Subj -> Pron[pers=?p, num=?n, case=nom] Is[pers=?p, num=?n] NounPhrase[num=?n, case=acc]
+
+Obj_Subj_Verb -> Pron[pers=?p, num=?n, case=nom] VERB[form=simple, type=trans] NounPhrase[case=acc]
+Obj_Subj_Verb -> Pron[pers=?p, num=?n, case=nom] Is[pers=?p, num=?n] VERB[form=prog, type=trans] NounPhrase[case=acc]
+Obj_Subj_Verb -> Pron[pers=?p, num=?n, case=nom] VERB[form=perf, type=trans] NounPhrase[case=acc]
+
+Quality_Subj -> NounPhrase[pers=?p, num=?n, case=nom] Is[pers=?p, num=?n] QUALITY 
+
+Subj_Verb -> NounPhrase[pers=?p, num=?n, case=nom] VERB[form=simple, type=trans]
+Subj_Verb -> NounPhrase[pers=?p, num=?n, case=nom] VERB[form=simple, type=intrans]
+
+# Lexical Productions
+# Function words
+Det[num=sg] -> 'a' | 'the'
+Det[num=pl] -> 'the'
+
+# Noun phrases
+NounPhrase[pers=?p, num=?n, case=?c] -> Pron[pers=?p, num=?n, case=?c]
+NounPhrase[pers=3, num=?n] -> NOUN[num=?n]
+NounPhrase[pers=3, num=?n] -> Det[num=?n] NOUN[num=?n]
+
+Pron[pers=1, num=sg, case=nom] -> 'i'
+Pron[pers=1, num=sg, case=acc] -> 'me' | 'myself'
+Pron[pers=1, num=pl, case=nom] -> 'we'
+Pron[pers=1, num=pl, case=acc] -> 'us' | 'ourselves'
+Pron[pers=2, case=nom] -> 'you'
+Pron[pers=2, num=sg, case=acc] -> 'you' | 'yourself'
+Pron[pers=2, num=pl, case=acc] -> 'you' | 'yourselves'
+Pron[pers=3, num=sg] -> 'this' | 'that'
+Pron[pers=3, num=pl] -> 'these' | 'those'
+
+# Verb phrases
+Is[pers=1, num=sg] -> 'am' | 'was'
+Is[pers=1, num=pl] -> 'are' | 'were'
+Is[pers=2] -> 'are' | 'were'
+Is[pers=3, num=sg] -> 'is' | 'was'
+Is[pers=3, num=pl] -> 'are' | 'were'
+
+Do[pers=1] -> 'do' | 'did' | 'would'
+Do[pers=2] -> 'do' | 'did' | 'would'
+Do[pers=3, num=sg] -> 'does' | 'did' | 'would'
+Do[pers=3, num=pl] -> 'do' | 'did' | 'would'
+
+#NOUN in gazetteer
+#QUALITY in gazetteer
+#VERB in gazetteer
