@@ -23,7 +23,7 @@ Obj_Q_Subj_Verb -> How Do[pers=?p, num=?n] Pron[pers=?p, num=?n, case=nom] VERB[
 Obj_Q_Subj_Verb -> Which[num=?m] NOUN[num=?m] Do[pers=?p, num=?n] Pron[pers=?p, num=?n, case=nom] VERB[form=inf, type=trans]
 
 Obj_Q_Verb -> What Is[pers=3, num=sg] VERB[form=prog, type=trans] NounPhrase[case=acc]
-Obj_Q_Verb -> What VERB[form=simple, type=trans] NounPhrase[case=acc]
+Obj_Q_Verb -> What VERB[form=simple, num=sg, type=trans] NounPhrase[case=acc]
 Obj_Q_Verb -> How Is[pers=?p, num=sg] NounPhrase[pers=?p, case=nom] VERB[form=perf, type=trans]
 
 Obj_Subj -> Is[pers=?p, num=?n] Pron[pers=?p, num=?n, case=nom] NounPhrase[num=?n, case=acc]

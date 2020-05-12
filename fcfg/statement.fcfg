@@ -14,7 +14,7 @@ S -> Subj_Verb
 #Expansions
 Obj_Subj -> Pron[pers=?p, num=?n, case=nom] Is[pers=?p, num=?n] NounPhrase[num=?n, case=acc]
 
-Obj_Subj_Verb -> Pron[pers=?p, num=?n, case=nom] VERB[form=simple, type=trans] NounPhrase[case=acc]
+Obj_Subj_Verb -> Pron[pers=?p, num=?n, case=nom] VERB[form=simple, num=?n, type=trans] NounPhrase[case=acc]
 Obj_Subj_Verb -> Pron[pers=?p, num=?n, case=nom] Is[pers=?p, num=?n] VERB[form=prog, type=trans] NounPhrase[case=acc]
 Obj_Subj_Verb -> Pron[pers=?p, num=?n, case=nom] VERB[form=perf, type=trans] NounPhrase[case=acc]
 
