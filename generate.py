@@ -10,6 +10,7 @@ from nltk.parse.generate import generate
 from nltk import load_parser
 from nltk import grammar, parse, Production
 from progress.bar import Bar
+from collections import defaultdict
 
 def gaz_to_fcfg(path, name):
     # Function to convert a gazetteer with features to fcfg rules that can be read by the generator
@@ -45,6 +46,7 @@ def gaz_to_fcfg(path, name):
             fcfggaz += "["+key+"]"
         fcfggaz += " -> '"+"' | '".join(d[key])+"'"
 
+    fcfggaz = "\n"+name+" -> '"+name+"'"
     return(fcfggaz)
 
 def iter_to_sample(iterator, parser, samplesize):
@@ -60,6 +62,7 @@ def iter_to_sample(iterator, parser, samplesize):
             x += 1
     except StopIteration:
         raise ValueError("Population not large enough to draw "+str(samplesize)+" grammatical samples.")
+        return results
     random.shuffle(results)  # Randomize positions of matches so far
     for i, v in enumerate(iterator, x): # Continue where you left off, at x
         r = random.randint(0, i) # Random number between 0 and current iteration
@@ -94,16 +97,21 @@ def compile_grammar(pt, gazlist):
     sourcepath = 'fcfg/'+pt+'.fcfg'
     targetpath = 'runtime/'+pt+'.fcfg'
     with open(sourcepath) as source:
-        sourcetext = source.read() # Original FCFG in fcfg/
+        sourcelines = source.readlines() # Original FCFG in fcfg/
     if os.path.exists(targetpath):
         os.remove(targetpath)
     with open(targetpath, 'a+') as target:
-        target.write(sourcetext) # New FCFG that has the gazetteers added to the end
+        toprule = re.compile("(S -> )(\S*)")
+        gazref = re.compile("([A-Z][A-Z]+(?:\[[^\]]*\])*)")
+        for line in sourcelines:
+            line = toprule.sub(r"\1\2 '\2'", line) # Add the names of the top rules to the end of the line for later reference
+            line = gazref.sub(r"'\1'", line) # Put gazetteers in quotes to substitute them later
+            target.write(line)
         for gaz in gazlist:
             try:
                 gazpath = 'gazetteers/'+gaz+'.gaz'
-                fcfg_gaz = gaz_to_fcfg(gazpath, gaz) # Actual transformation
-                target.write(fcfg_gaz)
+                fcfg_gaz = gaz_to_fcfg(gazpath, gaz) # Transform gazetteer file into FCFG format
+                target.write(fcfg_gaz) # Add FCFG-formed gazetteers to end of target file
             except FileNotFoundError:
                 print(gazpath+" not found.")
     print("FCFG for pt '"+pt+"' with tags {} ".format(gazlist)+" was written to "+targetpath)
@@ -118,7 +126,7 @@ def expand_grammar(pt, size):
         os.remove(corpuspath)
     print("Selecting {} random samples for {} grammar expansion...".format(size, pt))
     start = time.time()
-    valid_expansions = iter_to_sample(generate(grammar), parser, size) # Actual operation that selects the valid expansions
+    valid_expansions = iter_to_sample(generate(grammar), parser, size) # Function that randomly selects from valid expansions
     end = time.time()
     print("Took {} seconds.".format(end - start))
     with open(corpuspath, 'w') as corpus:
@@ -130,6 +138,6 @@ def expand_grammar(pt, size):
 compile_grammar('question', ['NOUN', 'VERB', 'QUALITY'])
 compile_grammar('statement', ['NOUN', 'VERB', 'QUALITY'])
 print()
-expand_grammar('question', 200)
+expand_grammar('question', 1000)
 print()
-expand_grammar('statement', 200)
+expand_grammar('statement', 1000)
