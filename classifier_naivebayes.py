@@ -41,7 +41,7 @@ def count_types(dataset):
         print(intent_type+":\t{} ({:.0%})".format(token_count, percent))
     print()
 
-def split_dev_test(dataset, features):
+def process_dev_test(dataset, features):
     # Split dataset into development and training set
     dev_size = int(len(all_data) * dev_partition)
     featureset = [(sentence_features(se, features), intent) for (se, intent) in dataset]
@@ -53,12 +53,16 @@ def split_dev_test(dataset, features):
 # Start script
 all_data = []
 for intent in supported_intents:
-    all_data.extend(load_data("runtime/corpus/"+intent+".cas"))
-    # For all supported intents specified above, read associated file and read sentence tokens and intent as 'all_data'
+    datapath = "runtime/corpus/"+intent+".cas"
+    try:
+        all_data.extend(load_data(datapath))
+        # For all supported intents specified above, read associated file and read sentence tokens and intent as 'all_data'
+    except FileNotFoundError:
+        print("No training data found for "+intent+" at "+datapath) 
 
 word_features = extract_feature_list(all_data) # Extract list of features
 random.shuffle(all_data) # Shuffle data before split so intents are evenly distributed
-(dev_set, train_set) = split_dev_test(all_data, word_features) # Split generated data into dev and train partitions, and add feature information
+(dev_set, train_set) = process_dev_test(all_data, word_features) # Split generated data into dev and train partitions, and add feature information
 
 print("Total Sentences: {}\nDev: {}, Train: {}\n".format(len(all_data), len(dev_set), len(train_set)))
 print("Intents in train set: ")
