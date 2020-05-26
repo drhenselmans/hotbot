@@ -14,14 +14,13 @@ S -> Subj_Verb
 #Expansions
 Obj_Subj -> Pron[pers=?p, num=?n, case=nom] Is[pers=?p, num=?n] NounPhrase[num=?n, case=acc]
 
-Obj_Subj_Verb -> Pron[pers=?p, num=?n, case=nom] VERB[form=simple, num=?n, type=trans] NounPhrase[case=acc]
+Obj_Subj_Verb -> Pron[pers=?p, num=?n, case=nom] Verb[form=simple, pers=?p, num=?n, type=trans] NounPhrase[case=acc]
 Obj_Subj_Verb -> Pron[pers=?p, num=?n, case=nom] Is[pers=?p, num=?n] VERB[form=prog, type=trans] NounPhrase[case=acc]
 Obj_Subj_Verb -> Pron[pers=?p, num=?n, case=nom] VERB[form=perf, type=trans] NounPhrase[case=acc]
 
 Quality_Subj -> NounPhrase[pers=?p, num=?n, case=nom] Is[pers=?p, num=?n] QUALITY 
 
-Subj_Verb -> NounPhrase[pers=?p, num=?n, case=nom] VERB[form=simple, type=trans]
-Subj_Verb -> NounPhrase[pers=?p, num=?n, case=nom] VERB[form=simple, type=intrans]
+Subj_Verb -> NounPhrase[pers=?p, num=?n, case=nom] Verb[form=simple, pers=?p, num=?n, type=intrans]
 
 # Lexical Productions
 # Function words
@@ -30,8 +29,10 @@ Det[num=pl] -> 'the'
 
 # Noun phrases
 NounPhrase[pers=?p, num=?n, case=?c] -> Pron[pers=?p, num=?n, case=?c]
-NounPhrase[pers=3, num=?n] -> NOUN[num=?n]
-NounPhrase[pers=3, num=?n] -> Det[num=?n] NOUN[num=?n]
+NounPhrase[pers=3, num=sg] -> NOUN[num=sg]
+NounPhrase[pers=3, num=pl] -> NOUN[num=pl]
+NounPhrase[pers=3, num=sg] -> Det[num=sg] NOUN[num=sg]
+NounPhrase[pers=3, num=pl] -> Det[num=pl] NOUN[num=pl]
 
 Pron[pers=1, num=sg, case=nom] -> 'i'
 Pron[pers=1, num=sg, case=acc] -> 'me' | 'myself'
@@ -44,6 +45,19 @@ Pron[pers=3, num=sg] -> 'this' | 'that'
 Pron[pers=3, num=pl] -> 'these' | 'those'
 
 # Verb phrases
+Verb[form=simple, num=sg, pers=1, type=trans] -> VERB[form=simple, num=sg, pers=1, type=trans]
+Verb[form=simple, num=pl, pers=1, type=trans] -> VERB[form=simple, num=pl, pers=1, type=trans]
+Verb[form=simple, num=sg, pers=2, type=trans] -> VERB[form=simple, num=sg, pers=2, type=trans]
+Verb[form=simple, num=pl, pers=2, type=trans] -> VERB[form=simple, num=pl, pers=2, type=trans]
+Verb[form=simple, num=sg, pers=3, type=trans] -> VERB[form=simple, num=sg, pers=3, type=trans]
+Verb[form=simple, num=pl, pers=3, type=trans] -> VERB[form=simple, num=pl, pers=3, type=trans]
+Verb[form=simple, num=sg, pers=1, type=intrans] -> VERB[form=simple, num=sg, pers=1, type=intrans]
+Verb[form=simple, num=pl, pers=1, type=intrans] -> VERB[form=simple, num=pl, pers=1, type=intrans]
+Verb[form=simple, num=sg, pers=2, type=intrans] -> VERB[form=simple, num=sg, pers=2, type=intrans]
+Verb[form=simple, num=pl, pers=2, type=intrans] -> VERB[form=simple, num=pl, pers=2, type=intrans]
+Verb[form=simple, num=sg, pers=3, type=intrans] -> VERB[form=simple, num=sg, pers=3, type=intrans]
+Verb[form=simple, num=pl, pers=3, type=intrans] -> VERB[form=simple, num=pl, pers=3, type=intrans]
+
 Is[pers=1, num=sg] -> 'am' | 'was'
 Is[pers=1, num=pl] -> 'are' | 'were'
 Is[pers=2] -> 'are' | 'were'
